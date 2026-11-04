@@ -1,0 +1,7 @@
+.gradle/
+.kotlin/
+build/
+local.properties
+.DS_Store
+*.maven.tar.gz
+__pycache__/
