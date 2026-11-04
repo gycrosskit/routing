@@ -13,7 +13,7 @@ def normalize(files):
     for file, data in modules.items():
         for variant in data["variants"]:
             name = variant["name"]
-            if name == "metadataSourcesElements" or name.endswith(("SourcesElements-published", "MetadataElements-published")):
+            if name in ("metadataSourcesElements", "sourcesElements") or name.endswith(("SourcesElements-published", "MetadataElements-published")):
                 removed[file].add(name)
             elif name.endswith("ResourcesElements-published") and "available-at" not in variant:
                 entries = variant.get("files", [])
