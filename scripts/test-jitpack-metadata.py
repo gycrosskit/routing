@@ -61,11 +61,13 @@ class PublicationContracts(unittest.TestCase):
             metadata.normalize([self.shared])
         self.assertEqual(self.shared.read_bytes(), before)
 
-    def test_root_sources_exact_and_classified_variants_only(self):
+    def test_jvm_root_sources_exact_and_classified_variants_only(self):
         keep = {"name": "customSourcesElements"}
-        self.write(self.native, [self.api, keep, {"name": "iosArm64SourcesElements-published"}, {"name": "iosArm64MetadataElements-published"}])
+        api = {"name": "apiElements", "files": [{"url": "main.jar"}]}
+        runtime = {"name": "runtimeElements", "files": [{"url": "main.jar"}]}
+        self.write(self.native, [api, runtime, keep, {"name": "sourcesElements", "files": [{"url": "main-sources.jar"}]}, {"name": "iosArm64SourcesElements-published"}, {"name": "iosArm64MetadataElements-published"}])
         metadata.normalize([self.native])
-        self.assertEqual(self.variants(self.native), [self.api, keep])
+        self.assertEqual(self.variants(self.native), [api, runtime, keep])
 
     def test_empty_repository_fails(self):
         with TemporaryDirectory() as empty:
