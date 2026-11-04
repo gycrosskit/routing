@@ -10,7 +10,7 @@ import kotlinx.serialization.json.JsonObject
 
 enum class Access { OPEN, SIGNED_IN }
 enum class Feature { ARCHIVE }
-@Target(AnnotationTarget.CLASS)
+@kotlin.annotation.Target(AnnotationTarget.CLASS)
 annotation class Link(val name: String = "", val path: String,
     val exposure: RouteExposure = RouteExposure.INTERNAL,
     val publicParameters: Array<String> = [], val positiveParameters: Array<String> = [],
@@ -32,7 +32,7 @@ val WireJson = Json
 @RouteRegistrySpec(Link::class, Screen::class, Target::class, Envelope::class, "sample.routing.WireJson")
 internal expect object GeneratedLinks { val definitions: List<Definition> }
 
-@Target(AnnotationTarget.PROPERTY)
+@kotlin.annotation.Target(AnnotationTarget.PROPERTY)
 annotation class BindScreen(val destination: KClass<out Screen>, val route: String)
 class OpenContext { var opened: String? = null }
 class Graph { val routes = mutableListOf<String>() }
