@@ -2,7 +2,7 @@
 
 提供跨平台声明式路由的通用注册、URI/JSON 信封校验、展示参数、拦截链与 KSP 生成器。`routing-core` 和 JVM `routing-compiler` 不持有业务目的地、品牌 Scheme、登录状态或页面 UI，也没有 Kuikly Module。宿主声明自己的类型和注解，并负责来源认证、业务准入与原生导航。
 
-当前修复版本为 **1.0.1（待发布）**。已发布的 `1.0.0` 存在 JitPack sources 变体引用冲突，公开元数据验收未通过；请等待 `1.0.1` 完成发布与公开消费验证。完整合同见[功能与平台差异](docs/功能与平台差异.md)，命令与验证边界见[开发与验证](docs/开发与验证.md)。
+当前修复版本 **1.0.1 已正式发布并通过公开消费验证**。已发布的 `1.0.0` 存在 JitPack sources 变体引用冲突，公开元数据验收未通过，原 Tag 和制品保留；新接入使用 `1.0.1`。完整合同见[功能与平台差异](docs/功能与平台差异.md)，命令与验证边界见[开发与验证](docs/开发与验证.md)。
 
 ## 架构与调用流程
 
@@ -44,7 +44,7 @@ classDiagram
 
 ## 安装与最小使用
 
-`1.0.1` 发布完成后的预期坐标（当前未发布）：
+`1.0.1` 正式版本坐标：
 
 ```kotlin
 repositories { maven("https://jitpack.io") }
@@ -80,6 +80,6 @@ if (target != null && hostAdmissionAllows(target)) {
 
 ## 验证与反馈
 
-保留 core 的 URI/信封/预算、展示、拦截器取消与重复放行保护，以及 compiler 的声明校验、跨轮聚合和第二宿主生成/执行回归。独立消费者覆盖 Maven core + KSP JAR。`1.0.1` 修复发布前遗漏的 JVM `sourcesElements` 正规化；保留 sources JAR，移除 JitPack 无法保持 classifier 的 GMM 变体。**1.0.1 尚待重新打包与实际 binary consumer 验证，公开坐标消费和设备验收未完成**，轻量脚本检查不等同于这些结果。
+保留 core 的 URI/信封/预算、展示、拦截器取消与重复放行保护，以及 compiler 的声明校验、跨轮聚合和第二宿主生成/执行回归。独立消费者覆盖 Maven core + KSP JAR。`1.0.1` 修复发布前遗漏的 JVM `sourcesElements` 正规化；保留 sources JAR，移除 JitPack 无法保持 classifier 的 GMM 变体。**1.0.1 已通过公开产物核验与真实 binary KSP consumer 验证**；宿主业务准入、原生接线与设备导航仍须另验，轻量脚本检查不能代替这些结果。
 
-发行入口：[Releases](https://github.com/gycrosskit/routing/releases)（1.0.1 待发布，1.0.0 原 Tag 和制品保留）。问题反馈请通过 [Issues](https://github.com/gycrosskit/routing/issues) 提供脱敏输入、精确版本和失败时序。源码抽离自宿主 `c768cb12c86e59b60fbc69149013850edce509b0`，许可证为 [Apache-2.0](LICENSE)。
+发行入口：[1.0.1 Release](https://github.com/gycrosskit/routing/releases/tag/1.0.1)（1.0.0 原 Tag 和制品保留）。问题反馈请通过 [Issues](https://github.com/gycrosskit/routing/issues) 提供脱敏输入、精确版本和失败时序。源码抽离自宿主 `c768cb12c86e59b60fbc69149013850edce509b0`，许可证为 [Apache-2.0](LICENSE)。
