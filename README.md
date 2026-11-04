@@ -2,7 +2,7 @@
 
 提供跨平台声明式路由的通用注册、URI/JSON 信封校验、展示参数、拦截链与 KSP 生成器。`routing-core` 和 JVM `routing-compiler` 不持有业务目的地、品牌 Scheme、登录状态或页面 UI，也没有 Kuikly Module。宿主声明自己的类型和注解，并负责来源认证、业务准入与原生导航。
 
-当前为 **0.1.0-rc.1 未发布候选**，不能视为已可从 JitPack 下载。完整合同见[功能与平台差异](docs/功能与平台差异.md)，命令与验证边界见[开发与验证](docs/开发与验证.md)。
+当前为 **1.0.0 首个正式版本（待发布）**，不能视为已可从 JitPack 下载。完整合同见[功能与平台差异](docs/功能与平台差异.md)，命令与验证边界见[开发与验证](docs/开发与验证.md)。
 
 ## 架构与调用流程
 
@@ -49,12 +49,12 @@ classDiagram
 ```kotlin
 repositories { maven("https://jitpack.io") }
 commonMain.dependencies {
-    implementation("com.github.gycrosskit.routing:routing-core:0.1.0-rc.1")
+    implementation("com.github.gycrosskit.routing:routing-core:1.0.0")
 }
 // 按实际目标启用 KSP；纯运行时消费可不安装 compiler。
 dependencies {
     listOf("Android", "IosArm64", "IosSimulatorArm64", "IosX64", "OhosArm64").forEach {
-        add("ksp$it", "com.github.gycrosskit.routing:routing-compiler:0.1.0-rc.1")
+        add("ksp$it", "com.github.gycrosskit.routing:routing-compiler:1.0.0")
     }
 }
 ```
@@ -80,6 +80,6 @@ if (target != null && hostAdmissionAllows(target)) {
 
 ## 验证与反馈
 
-保留 core 的 URI/信封/预算、展示、拦截器取消与重复放行保护，以及 compiler 的声明校验、跨轮聚合和第二宿主生成/执行回归。独立消费者覆盖 Maven core + KSP JAR。**本候选尚未执行 SDK 编译、回归、Native 链接、公开坐标消费或设备验收**，轻量脚本检查不等同于这些结果。
+保留 core 的 URI/信封/预算、展示、拦截器取消与重复放行保护，以及 compiler 的声明校验、跨轮聚合和第二宿主生成/执行回归。独立消费者覆盖 Maven core + KSP JAR。**1.0.0 尚待重新打包与实际 binary consumer 验证，公开坐标消费和设备验收未完成**，轻量脚本检查不等同于这些结果。
 
-发行入口：[Releases](https://github.com/gycrosskit/routing/releases)（当前候选未发布）。问题反馈请通过 [Issues](https://github.com/gycrosskit/routing/issues) 提供脱敏输入、精确版本和失败时序。源码抽离自宿主 `c768cb12c86e59b60fbc69149013850edce509b0`，许可证为 [Apache-2.0](LICENSE)。
+发行入口：[Releases](https://github.com/gycrosskit/routing/releases)（1.0.0 待发布）。问题反馈请通过 [Issues](https://github.com/gycrosskit/routing/issues) 提供脱敏输入、精确版本和失败时序。源码抽离自宿主 `c768cb12c86e59b60fbc69149013850edce509b0`，许可证为 [Apache-2.0](LICENSE)。

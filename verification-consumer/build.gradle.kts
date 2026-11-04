@@ -4,7 +4,7 @@ plugins {
     id("com.android.library") version "8.10.1"
     id("com.google.devtools.ksp") version "2.2.21-2.0.4"
 }
-val routingVersion = providers.gradleProperty("routingVersion").orElse("0.1.0-rc.1").get()
+val routingVersion = providers.gradleProperty("routingVersion").orElse("1.0.0").get()
 kotlin {
     jvmToolchain(21)
     androidTarget { compilerOptions.jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11) }
