@@ -1,0 +1,4 @@
+jdk:
+  - openjdk21
+install:
+  - bash jitpack-install.sh routing
