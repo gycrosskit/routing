@@ -1,5 +1,7 @@
 # Routing
 
+新版 Maven 发布由 Jenkins 生成同版本归档、`source-receipt.json` 和 `SHA256SUMS`。JitPack 核对标签来源、归档尺寸和摘要后安装同一份制品。历史发布按原版本 Tag 复验。
+
 提供跨平台声明式路由的通用注册、URI/JSON 信封校验、展示参数、拦截链与 KSP 生成器。`routing-core` 和 JVM `routing-compiler` 不持有业务目的地、品牌 Scheme、登录状态或页面 UI，也没有 Kuikly Module。宿主声明自己的类型和注解，并负责来源认证、业务准入与原生导航。
 
 当前修复版本 **1.0.1 已正式发布并通过公开消费验证**。已发布的 `1.0.0` 存在 JitPack sources 变体引用冲突，公开元数据验收未通过，原 Tag 和制品保留；新接入使用 `1.0.1`。完整合同见[功能与平台差异](docs/功能与平台差异.md)，命令与验证边界见[开发与验证](docs/开发与验证.md)。
