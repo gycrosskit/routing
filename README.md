@@ -8,41 +8,9 @@
 
 ## 架构与调用流程
 
-```mermaid
-flowchart LR
-    Decl[宿主类型与注解] --> Compiler[routing-compiler KSP]
-    Compiler --> Generated[宿主生成注册表]
-    Generated --> Core[routing-core]
-    Input[宿主可信入口] --> Core
-    Core --> Policy[宿主来源与业务准入]
-    Policy --> Native[宿主三端导航]
-```
+`routing-compiler` 在构建期校验宿主声明并生成 actual 注册表；`routing-core` 解析可信定义中的路由、展示参数和拦截链。来源认证、业务准入及三端导航由宿主负责。
 
-KSP 在构建期验证声明并生成宿主 actual 注册表；运行时解析通用参数，宿主保留最终授权。
-
-```mermaid
-sequenceDiagram
-    participant Entry as 宿主原生入口
-    participant Registry as RouteRegistry
-    participant Policy as 宿主准入
-    Entry->>Registry: parsePublic(host, uri, scheme)
-    Registry-->>Entry: 允许的目标或 null
-    Entry->>Policy: 核对真实来源与当前业务状态
-    Policy-->>Entry: 允许或拒绝
-    Entry->>Entry: 按平台生命周期导航
-```
-
-[`RouteRegistry`](routing-core/src/commonMain/kotlin/com/dgtang/live/routing/RouteRegistry.kt) 消费可信 [`RouteDefinition`](routing-core/src/commonMain/kotlin/com/dgtang/live/routing/RouteDefinition.kt)；[`RouteRegistrySpec` / `PageRegistrySpec`](routing-core/src/commonMain/kotlin/com/dgtang/live/routing/RouteRegistrySpec.kt) 配置生成器，不引用具体宿主包名。
-
-```mermaid
-classDiagram
-    class RouteRegistry~T~
-    class RouteDefinition~T~
-    class RoutePresentation
-    class RouteInterceptor~Q,R~
-    RouteRegistry --> RouteDefinition : 读取可信定义
-    RoutePresentation ..> RouteRegistry : 共用 URI 预算
-```
+文件职责和生成关系见 [AOCI 索引](aoci.txt)，公开/内部入口、预算与展示合同见[功能与平台差异](docs/功能与平台差异.md)。
 
 ## 安装与最小使用
 
@@ -82,6 +50,6 @@ if (target != null && hostAdmissionAllows(target)) {
 
 ## 验证与反馈
 
-保留 core 的 URI/信封/预算、展示、拦截器取消与重复放行保护，以及 compiler 的声明校验、跨轮聚合和第二宿主生成/执行回归。独立消费者覆盖 Maven core + KSP JAR。`1.0.1` 修复发布前遗漏的 JVM `sourcesElements` 正规化；保留 sources JAR，移除 JitPack 无法保持 classifier 的 GMM 变体。**1.0.1 已通过公开产物核验与真实 binary KSP consumer 验证**；宿主业务准入、原生接线与设备导航仍须另验，轻量脚本检查不能代替这些结果。
+源码回归、真实 binary KSP consumer 及发布证据统一见[开发与验证](docs/开发与验证.md)。宿主业务准入、原生接线与设备导航仍须另验。
 
 发行入口：[1.0.1 Release](https://github.com/gycrosskit/routing/releases/tag/1.0.1)（1.0.0 原 Tag 和制品保留）。问题反馈请通过 [Issues](https://github.com/gycrosskit/routing/issues) 提供脱敏输入、精确版本和失败时序。源码抽离自宿主 `c768cb12c86e59b60fbc69149013850edce509b0`，许可证为 [Apache-2.0](LICENSE)。
