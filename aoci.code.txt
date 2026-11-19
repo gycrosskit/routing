@@ -1,0 +1,78 @@
+#AOCI-CODE-VOLUME: 1
+
+===/Users/guoyang/.codex/worktrees/aoci-routing/routing/===
+.gitattributes[FC4T]: F:以 LF 文本检出维持 AOCI 原始字节指纹的跨平台一致 | R:- | A:- | S:-
+.gitignore[FC4T]: F:隔离构建缓存、归档和机器专属 Codex 配置 | R:- | A:- | S:本机连接配置还需从 AOCI Scope 排除
+AGENTS.md[SW7S]: F:规定路由组件边界、受控验证和 AOCI 认知流程 | R:code:docs/功能与平台差异.md | A:- | S:业务准入、来源认证、原生生命周期由宿主持有；索引语义必须依据真实证据创作
+CHANGELOG.md[SV4T]: F:记录 1.0.1 对 JitPack sources 变体的正规化修复 | R:code:scripts/jitpack-metadata.py | A:- | S:待发布是历史表述，当前正式状态核对根 README 与回执
+LICENSE[SG3M]: F:声明 Apache 2.0 授权、分发条件和免责声明 | R:- | A:- | S:-
+README.md[SW8T]: F:提供路由core与KSP安装、最小使用和宿主准入边界并链接AOCI与合同 | R:code:docs/功能与平台差异.md,code:docs/开发与验证.md | A:- | S:decodePublicTarget不认证来源，解析成功不代表有权导航；compiler JVM21只在构建期使用
+build.gradle.kts[FV6T]: F:固定 KMP 插件、routing 版本和 Maven staging 许可证 | R:code:routing-core/build.gradle.kts,code:routing-compiler/build.gradle.kts | A:- | S:VERSION 缺省 1.0.1，core 运行时与 compiler 构建 JVM 要求分开
+gradle.properties[FV4T]: F:设置 Gradle JVM 内存、UTF-8 及 AndroidX 属性 | R:- | A:- | S:-
+gradlew[EV4S]: F:在 Unix 查找 Java 并执行 Gradle Wrapper | R:code:gradle/wrapper/gradle-wrapper.properties | A:- | S:-
+gradlew.bat[EV4T]: F:在 Windows 查找 Java 并转发 Wrapper 参数和退出结果 | R:code:gradle/wrapper/gradle-wrapper.properties | A:- | S:-
+jitpack-install.sh[OV8T]: F:核对 Release 来源回执、归档摘要和安全解包后安装冻结 Maven 字节 | R:code:tests/test_jitpack_install.py | A:- | S:回执绑定当前 HEAD SHA 与 tree；拒绝重复字段、路径逃逸、链接与过量解包
+jitpack.yml[FV5T]: F:固定 JDK21 并调用 routing 冻结归档安装入口 | R:code:jitpack-install.sh | A:- | S:-
+settings.gradle.kts[FV6T]: F:设置插件和依赖镜像并注册 core 与 compiler 两个模块 | R:code:routing-core/build.gradle.kts,code:routing-compiler/build.gradle.kts | A:- | S:Kuikly 独占腾讯仓，保持完整 Gradle module 读取
+
+===/Users/guoyang/.codex/worktrees/aoci-routing/routing/docs/===
+功能与平台差异.md[SW8T]: F:维护公开与内部路由、参数预算、展示和生成器的跨平台合同 | R:code:routing-core/src/commonMain/kotlin/com/dgtang/live/routing/RouteRegistry.kt | A:- | S:可信调用方认证由宿主承担，静态 KSP 校验不能代替运行时业务准入
+开发与验证.md[SV7T]: F:规定轻量脚本、受控 core/compiler、产物与独立消费验收入口 | R:code:scripts/archive-prebuilt.sh,code:verification-consumer/build.gradle.kts | A:- | S:归档 checker 上限 65 兼容 JVM21 compiler，不能据此提高 core JVM11 目标
+
+===/Users/guoyang/.codex/worktrees/aoci-routing/routing/gradle/wrapper/===
+gradle-wrapper.properties[FV5T]: F:固定 Gradle 8.11.1 分发下载与 SHA256 校验 | R:code:gradlew,code:gradlew.bat | A:- | S:-
+
+===/Users/guoyang/.codex/worktrees/aoci-routing/routing/routing-compiler/===
+build.gradle.kts[FV7T]: F:构建 JVM21 KSP compiler，配置真实 KSP 与第二宿主编译测试 | R:code:routing-compiler/src/main/resources/META-INF/services/com.google.devtools.ksp.processing.SymbolProcessorProvider | A:- | S:compiler 仅构建期使用，不能把 JVM21 要求传播为手机运行时要求
+
+===/Users/guoyang/.codex/worktrees/aoci-routing/routing/routing-compiler/src/main/kotlin/com/dgtang/live/routing/compiler/===
+AppPageRouteProcessor.kt[XW9S]: F:验证宿主页面绑定的类型、唯一性与完整性并生成 actual 打开和注册表 | R:code:routing-compiler/src/main/kotlin/com/dgtang/live/routing/compiler/RegistrySpecification.kt | A:AppPageRouteProcessorProvider | S:只接受可引用顶层不可变 val；具体 sealed 叶子必须全绑定；空路由可重复，非空路由和 destination 唯一；保留名由宿主配置
+AppRouteProcessor.kt[XW9M]: F:验证宿主路由声明与参数，生成排序的 actual RouteDefinition 编解码表 | R:code:routing-compiler/src/main/kotlin/com/dgtang/live/routing/compiler/RegistrySpecification.kt | A:AppRouteProcessorProvider | S:声明未解析则整批延后；名称、路径重叠、序列化和公开标量字段严格检查；业务 access/features 类型来自宿主，生成器不认证实际调用方
+RegistrySpecification.kt[XW7T]: F:读取唯一 expect object 注册表配置并还原泛型类型名及可见性 | R:code:routing-core/src/commonMain/kotlin/com/dgtang/live/routing/RouteRegistrySpec.kt | A:registry,registryArguments,sourceName,visibility | S:同类配置出现多个或不是 expect object 即报错；类型别名递归展开
+
+===/Users/guoyang/.codex/worktrees/aoci-routing/routing/routing-compiler/src/main/resources/META-INF/services/===
+com.google.devtools.ksp.processing.SymbolProcessorProvider[FV7T]: F:通过 ServiceLoader 注册路由和页面两个 KSP provider | R:code:routing-compiler/src/main/kotlin/com/dgtang/live/routing/compiler/AppRouteProcessor.kt,code:routing-compiler/src/main/kotlin/com/dgtang/live/routing/compiler/AppPageRouteProcessor.kt | A:- | S:独立 binary KSP 消费必须验证此资源确实打包，源码调用 provider 不能代验服务发现
+
+===/Users/guoyang/.codex/worktrees/aoci-routing/routing/routing-compiler/src/test/kotlin/com/dgtang/live/routing/compiler/===
+AppPageRouteProcessorTest.kt[TW8M]: F:验证页面生成、缺失与重复绑定、保留名、泛型和二进制目的地 | R:code:routing-compiler/src/main/kotlin/com/dgtang/live/routing/compiler/AppPageRouteProcessor.kt | A:AppPageRouteProcessorTest | S:空 route 可用于多个动作；二进制目的地无需源注解，但具体页面仍要求完整绑定
+AppRouteProcessorTest.kt[TW8M]: F:验证路由表生成、枚举、路径重叠、参数类型、序列化与漏注册拒绝 | R:code:routing-compiler/src/main/kotlin/com/dgtang/live/routing/compiler/AppRouteProcessor.kt | A:AppRouteProcessorTest | S:内部嵌套数据可保留，公开字段仅允许标量和枚举；未标注具体 sealed 叶子必须报错
+KspTestSources.kt[TV7S]: F:为真实 KSP 测试准备隔离源码、日志并编译执行生成的第二宿主 | R:code:routing-compiler/src/test/kotlin/com/dgtang/live/routing/compiler/RegistryReuseTest.kt | A:runKspSources,kspTestConfig,kspTestLogger | S:只有 KSP 成功且无错误才编译 consumer；60 秒超时终止子进程，fixture 最终清理
+RegistryReuseTest.kt[TW8S]: F:用异名宿主类型、包装字段和多轮生成验证 compiler 可复用性 | R:code:routing-compiler/src/test/kotlin/com/dgtang/live/routing/compiler/KspTestSources.kt | A:RegistryReuseTest | S:验证生成表实际执行及跨轮保留已解析条目；保留名只使用该宿主显式配置
+
+===/Users/guoyang/.codex/worktrees/aoci-routing/routing/routing-core/===
+build.gradle.kts[FV7T]: F:构建 routing-core 的 JVM11、Android、iOS 和 OHOS 变体 | R:code:build.gradle.kts | A:- | S:serialization 是公开 api，Ktor HTTP 与协程保持内部实现依赖
+
+===/Users/guoyang/.codex/worktrees/aoci-routing/routing/routing-core/src/commonMain/kotlin/com/dgtang/live/routing/===
+RouteDefinition.kt[LW8T]: F:声明路由暴露等级及可信的名称、路径、字段和编解码定义 | R:code:routing-core/src/commonMain/kotlin/com/dgtang/live/routing/RouteRegistry.kt | A:RouteExposure,RouteDefinition | S:定义来自宿主可信声明，不能从外部 JSON 构造；RENDERER 仅允许可信信封
+RouteInterceptor.kt[LW8T]: F:执行泛型路由拦截链并以每帧 CAS 限制一次放行 | R:code:routing-core/src/commonTest/kotlin/com/dgtang/live/routing/RouteInterceptorTest.kt | A:RouteInterceptor,runRouteInterceptors | S:返回或异常后帧关闭；取消继续传播；不持锁等待异步工作或新建脱离请求任务
+RoutePresentation.kt[LW7T]: F:解析与应用独立展示 query，保留业务负载和相对 URI 形式 | R:code:routing-core/src/commonMain/kotlin/com/dgtang/live/routing/RouteRegistry.kt | A:RoutePresentation | S:标题最多 200 字符且禁控制字符，重复值和非严格布尔均拒绝，宿主另行决定是否允许覆盖
+RouteRegistry.kt[LW9M]: F:按可信路由定义解析投影 URI 和 JSON 信封，校验字段类型、预算及正值 | R:code:routing-core/src/commonMain/kotlin/com/dgtang/live/routing/RouteDefinition.kt | A:RouteRegistry,MAX_ROUTE_URI_BYTES,MAX_INTERNAL_ROUTE_URI_BYTES | S:公开 URI 16KiB、输出信封12KiB、单串4096 bytes；内部 URI512KiB、单串64KiB；内部解析跳过业务 normalize；来源认证仍由宿主负责，不得将内部 _args 输出外链或日志
+RouteRegistrySpec.kt[LW8T]: F:定义宿主路由和页面注册表的源码配置注解 | R:code:routing-compiler/src/main/kotlin/com/dgtang/live/routing/compiler/RegistrySpecification.kt | A:RouteRegistrySpec,PageRegistrySpec | S:注解为 SOURCE 保留级别，宿主声明自己的类型、JSON 名称和根页面保留名
+
+===/Users/guoyang/.codex/worktrees/aoci-routing/routing/routing-core/src/commonTest/kotlin/com/dgtang/live/routing/===
+RouteInterceptorTest.kt[TW8S]: F:验证拦截顺序、请求改写、短路、并发一次放行和取消终态 | R:code:routing-core/src/commonMain/kotlin/com/dgtang/live/routing/RouteInterceptor.kt | A:RouteInterceptorTest | S:返回后保存的旧帧仍不可 proceed；并发竞争只能有一次 terminal 调用
+RoutePresentationTest.kt[TW6T]: F:验证展示参数往返、负载保留及重复非法与超预算拒绝 | R:code:routing-core/src/commonMain/kotlin/com/dgtang/live/routing/RoutePresentation.kt | A:RoutePresentationTest | S:覆盖相对 URI 与完整品牌 URI，默认展示不改写输入
+RouteRegistryTest.kt[TW8M]: F:验证公开和内部入口、投影、严格类型、UTF-8、正值及独立容量预算 | R:code:routing-core/src/commonMain/kotlin/com/dgtang/live/routing/RouteRegistry.kt | A:RouteRegistryTest | S:百分号编码后 URI 容量和信封容量分别断言；内部嵌套数据不能经公开投影泄漏
+
+===/Users/guoyang/.codex/worktrees/aoci-routing/routing/scripts/===
+archive-prebuilt.sh[OV7T]: F:发布完整 core 与 compiler Maven 变体并冻结归档和 SHA256 | R:code:scripts/check-maven.py,code:scripts/jitpack-metadata.py | A:- | S:已有 staging 或归档即拒绝，compiler 要求 bytecode65 而 core 仍保持 JVM11
+build.sh[EV6T]: F:按单个平台调度 routing-core 生产编译并支持 Maven 打包 | R:code:scripts/archive-prebuilt.sh | A:- | S:compile 不执行测试或独立消费，未配置 HAR 打包渠道
+check-maven.py[OV8S]: F:检查 publication 集合、变体、许可证、摘要和 JVM 或 AAR 字节码 | R:code:scripts/archive-prebuilt.sh,code:scripts/test-check-maven.py | A:check_sidecars,check_jvm_bytecode,resolve_artifact | S:共享文件摘要可复用，但每个 variant 声明独立校验，SNAPSHOT 使用当前时间戳 metadata
+jitpack-metadata.py[OV8T]: F:移除 JitPack 不能保留 classifier 的精确 sources 和空资源变体 | R:code:scripts/test-jitpack-metadata.py | A:normalize | S:包含 JVM sourcesElements 的精确删除，保留 sources JAR 与 API/runtime；非空资源在写入前拒绝
+test-archive-prebuilt.py[TV6T]: F:通过替身 Gradle 和真实 tar 检查归档准入、顺序及防覆盖 | R:code:scripts/archive-prebuilt.sh | A:ArchiveTest | S:替身不运行 SDK，不能代验真实 staging
+test-check-maven.py[TV7S]: F:构造损坏 metadata、sidecar 和字节码检查产物校验拒绝路径 | R:code:scripts/check-maven.py | A:CheckerTest | S:覆盖 AAR 内嵌依赖 JAR 的字节码及损坏 ZIP，共享文件每个变体仍须核验
+test-jitpack-metadata.py[TV7T]: F:验证 JVM sourcesElements 精确移除、真实资源保护和 sidecar 更新 | R:code:scripts/jitpack-metadata.py | A:PublicationContracts | S:API/runtime 与自定义相似名称变体必须保留，失败不得部分改写
+
+===/Users/guoyang/.codex/worktrees/aoci-routing/routing/tests/===
+test_jitpack_install.py[TV8S]: F:核对冻结 routing Release 的身份、摘要与安全解包拒绝行为 | R:code:jitpack-install.sh | A:JitPackInstallTest | S:覆盖软链目标逃逸、非法 UTF-8、重复收据字段和特殊归档成员
+
+===/Users/guoyang/.codex/worktrees/aoci-routing/routing/verification-consumer/===
+build.gradle.kts[TV8T]: F:构建从 Maven 消费 core 与真实 binary KSP compiler 的独立多端工程 | R:code:verification-consumer/settings.gradle.kts,code:verification-consumer/src/commonMain/kotlin/Probe.kt | A:- | S:每个 KSP 目标解析发布 JAR 和服务资源；JDK21 是构建工具要求，Android 字节码仍为 11
+gradle.properties[FV3T]: F:固定独立消费者的 JVM 内存、UTF-8 和 AndroidX 属性 | R:- | A:- | S:-
+settings.gradle.kts[TV7T]: F:为独立消费者设置构建镜像与独占 routing 候选或 JitPack 仓 | R:code:verification-consumer/build.gradle.kts | A:- | S:候选缺失不能回退旧远程版本，公开消费须在独立工作区验收
+
+===/Users/guoyang/.codex/worktrees/aoci-routing/routing/verification-consumer/src/commonMain/kotlin/===
+Probe.kt[TW8T]: F:声明独立宿主类型并执行发布 core 与 binary KSP 生成路由和页面表的合同 | R:code:verification-consumer/build.gradle.kts | A:verifyConsumer | S:使用异名 wrapper、枚举、注册签名和保留名，验证组件不固化原宿主业务类型
+
+===/Users/guoyang/.codex/worktrees/aoci-routing/routing/verification-consumer/src/commonTest/kotlin/===
+ConsumerTest.kt[TW6T]: F:执行独立消费者生成注册表的实际调用断言 | R:code:verification-consumer/src/commonMain/kotlin/Probe.kt | A:ConsumerTest.generatedRegistriesUsePublishedArtifacts | S:测试必须实际运行，编译生成源码不能代算断言通过
